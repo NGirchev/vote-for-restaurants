@@ -3,16 +3,24 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
+
+    <display-name>Rest for restaurant voting</display-name>
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/classes/applicationContext.xml</param-value>
+        <param-value>
+            /WEB-INF/classes/application-context.xml
+            /WEB-INF/classes/rest-servlet.xml
+        </param-value>
     </context-param>
+    <!--<listener>-->
+        <!--<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>-->
+    <!--</listener>-->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
     <servlet>
-        <servlet-name>RestServlet</servlet-name>
+        <servlet-name>rest</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextAttribute</param-name>
@@ -22,7 +30,7 @@
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>RestServlet</servlet-name>
+        <servlet-name>rest</servlet-name>
         <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
     <session-config>

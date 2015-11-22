@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:task="http://www.springframework.org/schema/task"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-                        http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
-			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-                        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
-                        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
-                        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd"
-       default-autowire="byName">
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd" default-autowire="byName">
+
+    <context:annotation-config />
 
     <bean id="placeholderConfig"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" name="appProperties">
@@ -34,12 +32,11 @@
                 <property name="generateDdl" value="${jpa.generate_ddl}" />
             </bean>
         </property>
-        <property name="packagesToScan" value="ru.girchev.restaurant.core.domain" />
+        <property name="packagesToScan" value="ru.girchev.restaurant.domain" />
         <property name="jpaProperties">
             <props>
                 <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
                 <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
-                <prop key="hibernate.transaction.jta.platform">${jta.platform}</prop>
                 <!--<prop key="hibernate.cache.region.factory_class">${cache.factory_class}</prop>-->
                 <!--<prop key="hibernate.cache.use_second_level_cache">${cache.use_second_level_cache}</prop>-->
                 <!--<prop key="hibernate.cache.use_query_cache">${cache.use_query_cache}</prop>-->
@@ -62,7 +59,10 @@
     <!-- enable the configuration of transactional behavior based on annotations -->
     <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
 
-    <!-- Обработка аннотаций PersistenceContext и PersistenceUnit -->
+    <!-- handle PersistenceContext and PersistenceUnit annotations -->
     <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
+
+    <jpa:repositories base-package="ru.girchev.restaurant.repository"
+                      entity-manager-factory-ref="entityManagerFactory" />
 
 </beans>
