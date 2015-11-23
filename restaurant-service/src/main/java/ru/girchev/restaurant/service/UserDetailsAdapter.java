@@ -30,7 +30,7 @@ public class UserDetailsAdapter implements UserDetails {
         user.getRoles().forEach(r -> {
             authorityList.add(new SimpleGrantedAuthority(r.getName()));
         });
-        return null;
+        return authorityList;
     }
 
     @Override
@@ -61,5 +61,9 @@ public class UserDetailsAdapter implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:sec="http://www.springframework.org/schema/security"
+             xsi:schemaLocation="
+      http://www.springframework.org/schema/security
+      http://www.springframework.org/schema/security/spring-security.xsd
+      http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Rest authentication entry point configuration -->
+    <http use-expressions="true" entry-point-ref="restAuthenticationEntryPoint">
+        <intercept-url pattern="/rest/**" access="isAuthenticated()"/>
+        <sec:form-login authentication-success-handler-ref="restAuthenticationSuccessHandler"
+                        authentication-failure-handler-ref="failureHandler"
+                        login-processing-url="/j_spring_security_check"
+                        username-parameter="j_username"
+                        password-parameter="j_password"/>
+        <csrf disabled="true"/>
+        <logout/>
+    </http>
+
+    <beans:bean id="restAuthenticationEntryPoint"
+                class="ru.girchev.restaurant.security.RestAuthenticationEntryPoint"/>
+    <!-- Connect the custom authentication success handler -->
+    <beans:bean id="restAuthenticationSuccessHandler"
+                class="ru.girchev.restaurant.security.RestAuthenticationSuccessHandler"/>
+    <!-- Using default failure handler -->
+    <beans:bean id="failureHandler"
+                class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler"/>
+
+    <authentication-manager>
+        <authentication-provider ref="authProvider">
+        </authentication-provider>
+    </authentication-manager>
+
+    <beans:bean id="authProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <beans:property name="userDetailsService" ref="userService"></beans:property>
+    </beans:bean>
+
+    <beans:bean id="userService" class="ru.girchev.restaurant.service.UserServiceImpl"/>
+
+    <!-- Enable the annotations for defining the secure role -->
+    <global-method-security secured-annotations="enabled" pre-post-annotations="enabled"/>
+
+</beans:beans>

@@ -19,7 +19,5 @@ public interface UserService extends UserDetailsService{
 
     boolean hasRole(String role);
 
-    boolean hasRole(Role role);
-
     User getCurrentUser();
 }

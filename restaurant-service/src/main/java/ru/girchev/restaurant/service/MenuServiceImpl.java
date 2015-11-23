@@ -77,8 +77,6 @@ public class MenuServiceImpl implements MenuService {
             Menu lastMenu = findLastMenu(restaurant);
             if (Objects.nonNull(lastMenu) && DateUtils.isToday(lastMenu.getCreatedOn())) {
                 menuItemRepository.delete(lastMenu.getMenuItems());
-//                lastMenu.getMenuItems().clear();
-//                lastMenu = menuRepository.save(lastMenu);
                 retVal = updateMenu(lastMenu, dto);
             } else {
                 final Menu newMenuEntity = menuRepository.save(new Menu.Builder()
@@ -92,7 +90,6 @@ public class MenuServiceImpl implements MenuService {
     }
 
     private MenuDTO updateMenu (final Menu menu, MenuDTO dto) {
-//        Hibernate.initialize(menu);
         final List<MenuItem> menuItems = new ArrayList<>();
         if (Objects.nonNull(dto.getItems())) {
             dto.getItems().forEach(imd -> {

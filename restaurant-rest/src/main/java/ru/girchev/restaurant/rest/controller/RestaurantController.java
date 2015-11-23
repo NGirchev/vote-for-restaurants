@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.girchev.restaurant.dto.RestaurantDTO;
@@ -33,6 +35,7 @@ public class RestaurantController implements RestfulApi<RestaurantDTO>{
      * @return all objects
      */
     @Override
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     public @ResponseBody List<RestaurantDTO> getAll() {
         logger.debug("REST: GET ALL RESTAURANTS");
@@ -46,6 +49,7 @@ public class RestaurantController implements RestfulApi<RestaurantDTO>{
      * @return object
      */
     @Override
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     public @ResponseBody
     RestaurantDTO get(@PathVariable Long id) {
@@ -60,6 +64,7 @@ public class RestaurantController implements RestfulApi<RestaurantDTO>{
      * @return created object
      */
     @Override
+    @Secured("ROLE_ADMIN")
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     public @ResponseBody
     RestaurantDTO create(@RequestBody RestaurantDTO object) throws Exception {
@@ -75,6 +80,7 @@ public class RestaurantController implements RestfulApi<RestaurantDTO>{
      * @return updated object
      */
     @Override
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value="/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.PUT)
     public @ResponseBody
     RestaurantDTO update(@PathVariable Long id, @RequestBody RestaurantDTO object) {
@@ -88,6 +94,7 @@ public class RestaurantController implements RestfulApi<RestaurantDTO>{
      * @param id
      */
     @Override
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.DELETE)
     public @ResponseBody RestaurantDTO delete(@PathVariable Long id) {
         logger.debug("REST: DELETE RESTAURANT :"+id);

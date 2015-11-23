@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -41,16 +43,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean hasRole(String role) {
-        throw new UnsupportedOperationException("Not implemented");
-    }
-
-    @Override
-    public boolean hasRole(Role role) {
-        throw new UnsupportedOperationException("Not implemented");
+        for (Role r : getCurrentUser().getRoles()) {
+            if (r.getName().equals(role)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetailsAdapter) {
+            UserDetailsAdapter adapter = (UserDetailsAdapter)authentication.getPrincipal();
+            return adapter.getUser();
+        }
         return null;
     }
 

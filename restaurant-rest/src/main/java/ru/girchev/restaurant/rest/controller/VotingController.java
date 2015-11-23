@@ -5,13 +5,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.girchev.restaurant.domain.Restaurant;
 import ru.girchev.restaurant.domain.User;
+import ru.girchev.restaurant.dto.RestaurantDTO;
 import ru.girchev.restaurant.dto.VoteResultDto;
+import ru.girchev.restaurant.service.RestaurantService;
 import ru.girchev.restaurant.service.UserService;
 import ru.girchev.restaurant.service.VotingService;
+
+import java.util.List;
 
 
 /**
@@ -21,6 +27,7 @@ import ru.girchev.restaurant.service.VotingService;
 @Controller
 @RequestMapping("/vote")
 @Scope("session")
+@PreAuthorize("isAuthenticated()")
 public class VotingController {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -30,6 +37,9 @@ public class VotingController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RestaurantService restaurantService;
 
     @RequestMapping(value="/{restaurantId}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     public
@@ -43,4 +53,5 @@ public class VotingController {
         }
         return voteResultDto;
     }
+
 }

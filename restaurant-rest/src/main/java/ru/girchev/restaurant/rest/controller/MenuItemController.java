@@ -3,6 +3,7 @@ package ru.girchev.restaurant.rest.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.girchev.restaurant.domain.MenuItem;
@@ -21,6 +22,7 @@ import java.util.Objects;
 @Controller
 @RequestMapping("/restaurant/{restaurantId}/menu/{menuId}/item")
 @Scope("session")
+@Secured("ROLE_ADMIN")
 public class MenuItemController {
 
     @Autowired
