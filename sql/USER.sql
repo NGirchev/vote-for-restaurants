@@ -1,0 +1,3 @@
+INSERT INTO restaurant.USER (ID, IS_DELETED, LOCKING_KEY, IS_BLOCKED, EMAIL, FIRSTNAME, LAST_LOGIN_DATE, LASTNAME, MIDDLENAME, PASSWORD, UID, USERNAME) VALUES (2, 'N', 0, 'N', 'admin@restaurant-mail.com', null, null, null, null, 'pass', null, null);
+INSERT INTO restaurant.USER (ID, IS_DELETED, LOCKING_KEY, IS_BLOCKED, EMAIL, FIRSTNAME, LAST_LOGIN_DATE, LASTNAME, MIDDLENAME, PASSWORD, UID, USERNAME) VALUES (3, 'N', 0, 'N', 'user1@restaurant-mail.com', null, null, null, null, 'pass', null, null);
+INSERT INTO restaurant.USER (ID, IS_DELETED, LOCKING_KEY, IS_BLOCKED, EMAIL, FIRSTNAME, LAST_LOGIN_DATE, LASTNAME, MIDDLENAME, PASSWORD, UID, USERNAME) VALUES (4, 'N', 0, 'N', 'user2@restaurant-mail.com', null, null, null, null, 'pass', null, null);
