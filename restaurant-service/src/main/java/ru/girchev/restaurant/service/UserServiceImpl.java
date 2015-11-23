@@ -2,11 +2,16 @@ package ru.girchev.restaurant.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.girchev.restaurant.domain.Role;
 import ru.girchev.restaurant.domain.User;
 import ru.girchev.restaurant.dto.UserDTO;
+import ru.girchev.restaurant.repository.UserRepository;
 
 import java.util.List;
 
@@ -14,10 +19,15 @@ import java.util.List;
  * @author Girchev N.A. <ngirchev@gmail.com>
  *         Created on 22.11.15.
  */
+@SuppressWarnings("SpringJavaAutowiringInspection")
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public User registerUser(String email, String password) {
@@ -26,11 +36,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(String email, String password, String firstName, String lastname, String middlename) {
-        throw new UnsupportedOperationException("Not implemented");
-    }
-
-    @Override
-    public User authUser(String email, String password) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
@@ -44,29 +49,18 @@ public class UserServiceImpl implements UserService {
         throw new UnsupportedOperationException("Not implemented");
     }
 
-
     @Override
-    public UserDTO create(UserDTO dto) {
-        throw new UnsupportedOperationException("Not implemented");
+    public User getCurrentUser() {
+        return null;
     }
 
     @Override
-    public UserDTO findOne(Long id) {
-        throw new UnsupportedOperationException("Not implemented");
-    }
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("Email is not found in the database");
+        }
+        return new UserDetailsAdapter(user);
 
-    @Override
-    public UserDTO update(Long id, UserDTO dto) {
-        throw new UnsupportedOperationException("Not implemented");
-    }
-
-    @Override
-    public List<UserDTO> getAll() {
-        throw new UnsupportedOperationException("Not implemented");
-    }
-
-    @Override
-    public void delete(Long id) {
-        throw new UnsupportedOperationException("Not implemented");
     }
 }

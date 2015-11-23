@@ -10,7 +10,9 @@ import ru.girchev.restaurant.domain.Vote;
  */
 public interface VotingService {
 
-    boolean vote (Restaurant restaurant, User user);
+    boolean vote (Long restaurantId, User user);
 
-    boolean checkOneVote(User user);
+    boolean checkVoteTime();
+
+    int calculateRating(Long restaurantId);
 }

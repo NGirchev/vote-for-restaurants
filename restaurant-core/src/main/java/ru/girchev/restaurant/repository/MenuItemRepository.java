@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.girchev.restaurant.domain.Menu;
 import ru.girchev.restaurant.domain.MenuItem;
+import ru.girchev.restaurant.domain.Restaurant;
 
 /**
  * @author Girchev N.A. <ngirchev@gmail.com>

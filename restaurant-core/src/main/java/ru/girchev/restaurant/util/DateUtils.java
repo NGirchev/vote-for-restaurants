@@ -1,5 +1,6 @@
 package ru.girchev.restaurant.util;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -19,5 +20,14 @@ public class DateUtils {
 
     public static boolean isToday(Date dateToCompare) {
         return org.apache.commons.lang3.time.DateUtils.isSameDay(new Date(), dateToCompare);
+    }
+
+    public static Date getTodayWithTime(int hour, int minute) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY, hour);
+        c.set(Calendar.MINUTE, minute);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTime();
     }
 }

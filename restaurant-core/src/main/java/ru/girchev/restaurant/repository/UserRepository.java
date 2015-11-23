@@ -16,4 +16,6 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findByBlockedFalse();
+
+    User findByEmail(String email);
 }

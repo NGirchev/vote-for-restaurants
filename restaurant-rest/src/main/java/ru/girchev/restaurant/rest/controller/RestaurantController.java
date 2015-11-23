@@ -88,10 +88,10 @@ public class RestaurantController implements RestfulApi<RestaurantDTO>{
      * @param id
      */
     @Override
-    @RequestMapping(value="/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.DELETE)
-    public void delete(@PathVariable Long id) {
+    @RequestMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.DELETE)
+    public @ResponseBody RestaurantDTO delete(@PathVariable Long id) {
         logger.debug("REST: DELETE RESTAURANT :"+id);
-        restaurantService.delete(id);
+        return restaurantService.delete(id);
     }
 
 }

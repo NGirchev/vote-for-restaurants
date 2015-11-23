@@ -1,6 +1,7 @@
 package ru.girchev.restaurant.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,8 +19,8 @@ public class Menu extends AbstractEntity {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Restaurant restaurant;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "menu", fetch = FetchType.EAGER)
-    private List<MenuItem> menuItems;
+    @OneToMany(mappedBy = "menu", fetch = FetchType.EAGER)
+    private List<MenuItem> menuItems = new ArrayList<>();
 
     @Column(name = "CREATED_ON")
     @Temporal(TemporalType.DATE)

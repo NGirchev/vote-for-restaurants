@@ -5,6 +5,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 
@@ -40,7 +41,7 @@ public class User extends AbstractEntity {
     @ManyToMany
     @JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
 //    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private List<Role> roles;
+    private List<Role> roles = new ArrayList<>();
 
     /**
      *

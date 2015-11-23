@@ -3,6 +3,8 @@ package ru.girchev.restaurant.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.girchev.restaurant.domain.Menu;
+import ru.girchev.restaurant.domain.Restaurant;
+import ru.girchev.restaurant.domain.User;
 import ru.girchev.restaurant.domain.Vote;
 
 /**
@@ -12,4 +14,5 @@ import ru.girchev.restaurant.domain.Vote;
 @Repository
 public interface VoteRepository extends JpaRepository<Vote, Long> {
 
+    Vote findByUser(User user);
 }

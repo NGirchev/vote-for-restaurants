@@ -1,4 +1,4 @@
-package ru.girchev.restaurant.exception;
+package ru.girchev.restaurant.service.exception;
 
 
 /**
@@ -7,9 +7,8 @@ package ru.girchev.restaurant.exception;
  */
 public class MenuException extends Exception {
 
-    public static final String MESSAGE_ONE_PER_DAY = "Can be only one menu entity for one restaurant per day ";
-
-    public static final String MESSAGE_NOT_EMPTY_ID = "Restaurant id must be not null ";
+    //TODO to properties files
+    public static final String MESSAGE_NOT_EMPTY_ID = "Restaurant id or menu id must be not null ";
 
 
     /**

@@ -8,6 +8,13 @@ public class AbstractDTO {
 
     private Long id;
 
+    public AbstractDTO() {
+    }
+
+    public AbstractDTO(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }
@@ -15,4 +22,6 @@ public class AbstractDTO {
     public void setId(Long id) {
         this.id = id;
     }
+
+
 }

@@ -1,6 +1,8 @@
 package ru.girchev.restaurant.service;
 
+import ru.girchev.restaurant.domain.Restaurant;
 import ru.girchev.restaurant.dto.AbstractDTO;
+import ru.girchev.restaurant.dto.RestaurantDTO;
 
 import java.util.List;
 
@@ -18,5 +20,5 @@ public interface CrudService<D extends AbstractDTO>{
 
     List<D> getAll();
 
-    void delete(Long id);
+    D delete(Long id);
 }

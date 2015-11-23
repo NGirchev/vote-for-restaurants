@@ -1,6 +1,7 @@
 package ru.girchev.restaurant.rest.controller;
 
 import ru.girchev.restaurant.dto.AbstractDTO;
+import ru.girchev.restaurant.dto.RestaurantDTO;
 
 import java.util.List;
 
@@ -41,5 +42,5 @@ public interface RestfulApi <D extends AbstractDTO> {
      * delete
      * @param id
      */
-    void delete(Long id) throws Exception;
+    D delete(Long id) throws Exception;
 }

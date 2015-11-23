@@ -10,6 +10,16 @@ public class RestaurantDTO extends AbstractDTO {
 
     private MenuDTO menu;
 
+    private int rating;
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
     public String getName() {
         return name;
     }
@@ -24,5 +34,13 @@ public class RestaurantDTO extends AbstractDTO {
 
     public void setMenu(MenuDTO menu) {
         this.menu = menu;
+    }
+
+    public RestaurantDTO() {
+        super();
+    }
+
+    public RestaurantDTO(Long id) {
+        super(id);
     }
 }

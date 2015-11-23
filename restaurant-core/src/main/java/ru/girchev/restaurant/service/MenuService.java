@@ -5,6 +5,7 @@ import ru.girchev.restaurant.domain.Restaurant;
 import ru.girchev.restaurant.dto.MenuDTO;
 import ru.girchev.restaurant.dto.MenuItemDTO;
 import ru.girchev.restaurant.dto.RestaurantDTO;
+import ru.girchev.restaurant.service.exception.MenuException;
 
 import java.util.List;
 
@@ -15,5 +16,7 @@ import java.util.List;
 public interface MenuService extends CrudService<MenuDTO>{
 
     Menu findLastMenu(Restaurant restaurant);
+
+    List<MenuDTO> getAllForRestaurant(Long Id);
 
 }

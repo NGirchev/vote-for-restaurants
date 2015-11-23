@@ -5,9 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.girchev.restaurant.domain.Menu;
 import ru.girchev.restaurant.domain.Restaurant;
-import ru.girchev.restaurant.dto.MenuDTO;
 import ru.girchev.restaurant.dto.RestaurantDTO;
 import ru.girchev.restaurant.mapper.MenuMapper;
 import ru.girchev.restaurant.mapper.RestaurantMapper;
@@ -21,27 +21,31 @@ import java.util.Objects;
  * @author Girchev N.A. <ngirchev@gmail.com>
  *         Created on 22.11.15.
  */
+@SuppressWarnings("SpringJavaAutowiringInspection")
 @Service
+@Transactional
 public class RestaurantServiceImpl implements RestaurantService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @SuppressWarnings("SpringJavaAutowiringInspection")
     @Autowired
     private RestaurantRepository restaurantRepository;
 
     @Autowired
     private MenuService menuService;
 
+    @Autowired
+    private VotingService votingService;
+
     @Override
-    public RestaurantDTO create(RestaurantDTO restaurantDTO) {
+    public RestaurantDTO create(RestaurantDTO dto) {
         RestaurantDTO retVal = new RestaurantDTO();
-        if (Objects.nonNull(restaurantDTO) && StringUtils.isNoneBlank(restaurantDTO.getName())) {
+        if (Objects.nonNull(dto) && StringUtils.isNoneBlank(dto.getName())) {
             retVal = new RestaurantMapper().map(
-                    restaurantRepository.save(new Restaurant(restaurantDTO.getName())));
-            if (Objects.nonNull(restaurantDTO.getMenu())) {
+                    restaurantRepository.save(new Restaurant(dto.getName())));
+            if (Objects.nonNull(dto.getMenu())) {
                 try {
-                    retVal.setMenu(menuService.create(restaurantDTO.getMenu()));
+                    retVal.setMenu(menuService.create(dto.getMenu()));
                 } catch (Exception e) {
                     logger.error(e.getLocalizedMessage(), e);
                 }
@@ -58,17 +62,18 @@ public class RestaurantServiceImpl implements RestaurantService {
             retVal = new RestaurantMapper().map(restaurant);
             Menu menu = menuService.findLastMenu(restaurant);
             retVal.setMenu(new MenuMapper().map(menu));
+            retVal.setRating(votingService.calculateRating(id));
         }
         return retVal;
     }
 
     @Override
-    public RestaurantDTO update(Long id, RestaurantDTO restaurantDTO) {
+    public RestaurantDTO update(Long id, RestaurantDTO dto) {
         RestaurantDTO retVal = new RestaurantDTO();
-        if (Objects.nonNull(restaurantDTO) && StringUtils.isNoneBlank(restaurantDTO.getName())) {
+        if (Objects.nonNull(dto) && StringUtils.isNoneBlank(dto.getName())) {
             final Restaurant restaurant = restaurantRepository.findOne(id);
             if (Objects.nonNull(restaurant)) {
-                restaurant.setName(restaurantDTO.getName());
+                restaurant.setName(dto.getName());
                 retVal = new RestaurantMapper().map(restaurantRepository.save(restaurant));
             }
         }
@@ -90,12 +95,14 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public void delete(Long id) {
+    public RestaurantDTO delete(Long id) {
+        RestaurantDTO retVal = new RestaurantDTO();
         Restaurant restaurant = restaurantRepository.findByIdAndDeletedFalse(id);
         if (Objects.nonNull(restaurant)) {
             restaurant.setDeleted(true);
-            restaurantRepository.save(restaurant);
+            retVal = new RestaurantMapper().map(restaurantRepository.save(restaurant));
         }
+        return retVal;
     }
 
 }

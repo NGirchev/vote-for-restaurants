@@ -2,26 +2,86 @@ package ru.girchev.restaurant.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.girchev.restaurant.domain.Restaurant;
-import ru.girchev.restaurant.domain.User;
+import org.springframework.transaction.annotation.Transactional;
+import ru.girchev.restaurant.domain.*;
+import ru.girchev.restaurant.repository.RestaurantRepository;
+import ru.girchev.restaurant.repository.VoteRepository;
+import ru.girchev.restaurant.util.DateUtils;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author Girchev N.A. <ngirchev@gmail.com>
  *         Created on 21.11.15.
  */
 @Service
-public class VotingServiceImpl implements VotingService{
+@Transactional
+public class VotingServiceImpl implements VotingService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
+    @PersistenceContext
+    private EntityManager em;
+
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    private VoteRepository voteRepository;
+
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    private RestaurantRepository restaurantRepository;
+
     @Override
-    public boolean vote(Restaurant restaurant, User user) {
-        throw new UnsupportedOperationException("Not implemented");
+    public boolean vote(Long restaurantId, User user) {
+        if (checkVoteTime()) {
+            final Restaurant restaurantEntity = restaurantRepository.findByIdAndDeletedFalse(restaurantId);
+            if (Objects.nonNull(restaurantEntity)) {
+                Vote voteEntity = voteRepository.findByUser(user);
+                if (Objects.isNull(voteEntity)) {
+                    voteEntity = new Vote.Builder()
+                            .withLastUpdated(new Date())
+                            .withRestaurant(restaurantEntity)
+                            .withUser(user).build();
+                } else {
+                    voteEntity.setLastUpdated(new Date());
+                    voteEntity.setRestaurant(restaurantEntity);
+                }
+                voteRepository.save(voteEntity);
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
-    public boolean checkOneVote(User user) {
-        throw new UnsupportedOperationException("Not implemented");
+    public boolean checkVoteTime() {
+        return new Date().before(DateUtils.getTodayWithTime(17, 0));
     }
+
+    @Override
+    public int calculateRating(Long restaurantId) {
+        int result = 0;
+        if (Objects.nonNull(restaurantId)) {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+            Root<Vote> from = cq.from(Vote.class);
+            cq.select(cb.count(from));
+            Predicate p1 = cb.equal(from.get(Vote_.restaurant).get(Restaurant_.id), restaurantId);
+            Predicate p2 = cb.greaterThan(from.get(Vote_.lastUpdated), DateUtils.today());
+            cq.where(p1, p2);
+            result = em.createQuery(cq).getSingleResult().intValue();
+        }
+        return result;
+    }
+
+
 }

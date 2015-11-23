@@ -15,7 +15,7 @@ public class Vote extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "USER_ID", nullable = false)
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private User user;
 
@@ -26,10 +26,6 @@ public class Vote extends AbstractEntity {
     @Column(name = "LAST_UPDATED")
     @Temporal(TemporalType.DATE)
     private Date lastUpdated;
-
-    @Column(name = "FINAL_DECISION")
-    @Type(type = "yes_no")
-    private boolean finalDecision;
 
     public User getUser() {
         return user;
@@ -55,14 +51,6 @@ public class Vote extends AbstractEntity {
         this.lastUpdated = lastUpdated;
     }
 
-    public boolean isFinalDecision() {
-        return finalDecision;
-    }
-
-    public void setFinalDecision(boolean finalDecision) {
-        this.finalDecision = finalDecision;
-    }
-
     public static class Builder
             extends AbstractEntity.Builder<Vote, Vote.Builder> {
 
@@ -71,9 +59,6 @@ public class Vote extends AbstractEntity {
         }
         public Builder withRestaurant( Restaurant restaurant ) {
             obj.setRestaurant(restaurant); return thisObj;
-        }
-        public Builder withFinalDecision( boolean finalDecision ) {
-            obj.setFinalDecision(finalDecision); return thisObj;
         }
         public Builder withLastUpdated( Date lastUpdated ) {
             obj.setLastUpdated(lastUpdated); return thisObj;

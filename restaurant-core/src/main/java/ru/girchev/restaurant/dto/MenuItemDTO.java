@@ -10,6 +10,8 @@ public class MenuItemDTO extends AbstractDTO {
 
     private String cost;
 
+    private Long menuId;
+
     public String getCost() {
         return cost;
     }
@@ -24,5 +26,13 @@ public class MenuItemDTO extends AbstractDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getMenuId() {
+        return menuId;
+    }
+
+    public void setMenuId(Long menuId) {
+        this.menuId = menuId;
     }
 }

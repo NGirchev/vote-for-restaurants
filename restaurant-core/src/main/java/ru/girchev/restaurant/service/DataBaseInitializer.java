@@ -24,6 +24,7 @@ import java.util.*;
  * @author Girchev N.A. <ngirchev@gmail.com>
  *         Created on 22.11.15.
  */
+@SuppressWarnings("SpringJavaAutowiringInspection")
 @Service
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 @Transactional
@@ -97,10 +98,10 @@ public class DataBaseInitializer {
                     .withRestaurant(r)
                     .build());
         });
-        LocalDate today = LocalDate.now();
-        today.minusDays(1);
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DAY_OF_MONTH, -2);
 
-        resultList.add(new Menu.Builder().withCreatedOn(Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant()))
+        resultList.add(new Menu.Builder().withCreatedOn(c.getTime())
                 .withMenuItems(generateMenuItems())
                 .withRestaurant(restaurantList.get(0))
                 .build());
