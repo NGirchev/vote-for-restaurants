@@ -72,7 +72,7 @@ public class VotingServiceImpl implements VotingService {
 
     @Override
     public boolean checkVoteTime() {
-        return new Date().before(DateUtils.getTodayWithTime(23, 0));
+        return new Date().before(DateUtils.getTodayWithTime(11, 0));
     }
 
     @Override
