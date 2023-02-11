@@ -27,7 +27,7 @@
         <commons-dbcp>2.1.1</commons-dbcp>
         <mysql.connector>5.1.37</mysql.connector>
         <spring.jpa.version> 1.9.0.RELEASE</spring.jpa.version>
-        <jackson-databind.version>2.6.3</jackson-databind.version>
+        <jackson-databind.version>2.12.7.1</jackson-databind.version>
         <jackson.core.asl.version>1.9.13</jackson.core.asl.version>
         <cloning.version>1.9.2</cloning.version>
     </properties>
